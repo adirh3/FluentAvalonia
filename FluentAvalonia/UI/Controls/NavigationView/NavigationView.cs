@@ -311,7 +311,7 @@ namespace FluentAvalonia.UI.Controls
             return base.MeasureOverride(availableSize);
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
             
@@ -337,8 +337,8 @@ namespace FluentAvalonia.UI.Controls
                 // When PaneDisplayMode is changed, reset the force flag to make the Pane can be opened automatically again.
                 _wasForceClosed = false;
 
-                var oldValue = change.OldValue.GetValueOrDefault<NavigationViewPaneDisplayMode>();
-                var newValue = change.NewValue.GetValueOrDefault<NavigationViewPaneDisplayMode>();
+                var oldValue = change.GetOldValue<NavigationViewPaneDisplayMode>();
+                var newValue = change.GetNewValue<NavigationViewPaneDisplayMode>();
 				
                 CollapseTopLevelMenuItems(oldValue);
                 UpdatePaneToggleButtonVisibility();
@@ -369,7 +369,7 @@ namespace FluentAvalonia.UI.Controls
             {
                 InvalidateTopNavPrimaryLayout();
 
-                if (change.NewValue.GetValueOrDefault() is AutoCompleteBox acb)
+                if (change.NewValue is AutoCompleteBox acb)
                 {
                     //TODO: WinUI has SuggestionChosen event handler here, find compatible event...
                 }
@@ -412,7 +412,7 @@ namespace FluentAvalonia.UI.Controls
 			}
 			else if (change.Property == SelectedItemProperty)
 			{
-				OnSelectedItemPropertyChanged(change.OldValue.GetValueOrDefault(), change.NewValue.GetValueOrDefault());
+				OnSelectedItemPropertyChanged(change.OldValue, change.NewValue);
 			}
         }
 

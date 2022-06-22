@@ -144,7 +144,7 @@
                         <ContentPresenter Name="ContentPresenter"
                                           VerticalContentAlignment="Center"
                                           Content="{TemplateBinding Content}"
-                                          TextBlock.FontSize="{TemplateBinding FontSize}"
+                                          TextElement.FontSize="{TemplateBinding FontSize}"
                                           Padding="4,0,0,0"
                                           Grid.Column="1" />
                         

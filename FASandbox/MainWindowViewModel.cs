@@ -1,9 +1,10 @@
-﻿namespace FASandbox;
-
-public class MainWindowViewModel
+﻿namespace FASandbox
 {
-    public MainWindowViewModel()
+    public class MainWindowViewModel
     {
-        
+        public MainWindowViewModel()
+        {
+            
+        }
     }
 }

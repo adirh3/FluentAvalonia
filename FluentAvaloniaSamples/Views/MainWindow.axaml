@@ -20,6 +20,7 @@
         Width="1280" Height="750"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
         x:Class="FluentAvaloniaSamples.Views.MainWindow"
+        Background="Transparent"
         Icon="/Assets/FAIcon.ico"
         Title="FluentAvalonia Samples">
 	    

@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 
@@ -10,12 +11,12 @@ namespace FluentAvalonia.UI.Controls
     /// </summary>
     public partial class FontIcon : IconElement
     {       
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
             if (change.Property == TextBlock.ForegroundProperty ||
-                change.Property == TextBlock.FontSizeProperty ||
+                change.Property == TextElement.FontSizeProperty ||
                 change.Property == TextBlock.FontFamilyProperty ||
-                change.Property == TextBlock.FontWeightProperty ||
+                change.Property == TextElement.FontWeightProperty ||
                 change.Property == TextBlock.FontStyleProperty ||
                 change.Property == GlyphProperty)
             {
@@ -33,7 +34,7 @@ namespace FluentAvalonia.UI.Controls
                 GenerateText();
             }
 
-            return _textLayout.Size;
+            return _textLayout.Bounds.Size;
         }
 
         public override void Render(DrawingContext context)
@@ -43,10 +44,10 @@ namespace FluentAvalonia.UI.Controls
 
             var dstRect = new Rect(Bounds.Size);
             using (context.PushClip(dstRect))
-            using (context.PushPreTransform(Matrix.CreateTranslation(dstRect.Center.X - _textLayout.Size.Width / 2,
-                dstRect.Center.Y - _textLayout.Size.Height / 2)))
+            using (context.PushPreTransform(Matrix.CreateTranslation(dstRect.Center.X - _textLayout.Bounds.Size.Width / 2,
+                dstRect.Center.Y - _textLayout.Bounds.Size.Height / 2)))
             {
-                _textLayout.Draw(context);
+                _textLayout.Draw(context, dstRect.TopLeft);
             }
         }
 

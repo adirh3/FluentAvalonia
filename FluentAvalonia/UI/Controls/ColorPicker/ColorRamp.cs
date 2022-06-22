@@ -1,12 +1,11 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using System;
+using Avalonia;
 using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.Immutable;
 using FluentAvalonia.UI.Media;
-using System;
 using AvColor = Avalonia.Media.Color;
 
 namespace FluentAvalonia.UI.Controls
@@ -26,7 +25,7 @@ namespace FluentAvalonia.UI.Controls
             FocusableProperty.OverrideDefaultValue<ColorRamp>(true);
         }
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 			if (change.Property == BorderBrushProperty ||
@@ -173,17 +172,6 @@ namespace FluentAvalonia.UI.Controls
 						});
 					}
 				}
-                else
-                {
-                    for (int i = 0, idx=0; i <= 360; i += 60, idx++)
-                    {
-                        _lgb.GradientStops[idx] = new GradientStop
-                        {
-                            Color = Color.WithHue(i).WithAlpha(255),
-                            Offset = i / 360.0
-                        };
-                    }
-                }
 			}
 			else
 			{
@@ -418,7 +406,7 @@ namespace FluentAvalonia.UI.Controls
 			b.TileMode = TileMode.Tile;
 			// b.SourceRect = new RelativeRect(0, 0, 50, 50, RelativeUnit.Absolute);
 			b.DestinationRect = new RelativeRect(0, 0, 50, 50, RelativeUnit.Absolute);
-			b.BitmapInterpolationMode = Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.HighQuality;
+			b.BitmapInterpolationMode = BitmapInterpolationMode.HighQuality;
 			return b.ToImmutable();
 			
 			//_checkBrush = b;//.ToImmutable();

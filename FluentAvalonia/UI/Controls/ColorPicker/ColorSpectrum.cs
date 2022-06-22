@@ -1,14 +1,15 @@
-﻿using Avalonia;
-using System;
-using SkiaSharp;
+﻿using System;
+using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Skia;
-using Avalonia.Input;
-using FluentAvalonia.UI.Media;
-using System.Threading.Tasks;
-using FluentAvalonia.Core;
 using Avalonia.Media.Immutable;
+using Avalonia.Platform;
+using Avalonia.Skia;
+using FluentAvalonia.Core;
+using FluentAvalonia.UI.Media;
+using SkiaSharp;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -46,7 +47,7 @@ namespace FluentAvalonia.UI.Controls
             {
                 if (Shape == ColorSpectrumShape.Spectrum)
                 {
-                    context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), rect, Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.HighQuality);
+                    context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), rect, BitmapInterpolationMode.HighQuality);
 
                     RenderSelectorRects(context, rect.Width, rect.Height);
 
@@ -69,7 +70,7 @@ namespace FluentAvalonia.UI.Controls
 					// Value by drawing a Black ellipse behind the image and the using the Value as the opacity
 					// to draw the bitmap
 					using (context.PushOpacity(Color.Valuef))
-						context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), _lastWheelRect, Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.HighQuality);
+						context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), _lastWheelRect, BitmapInterpolationMode.HighQuality);
 				}
 				else if (Shape == ColorSpectrumShape.Triangle)
                 {
@@ -81,7 +82,7 @@ namespace FluentAvalonia.UI.Controls
                         CreateBitmap();
                     }
 
-                    context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), _lastWheelRect, Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.HighQuality);
+                    context.DrawImage(_tempBitmap, new Rect(_tempBitmap.Size), _lastWheelRect, BitmapInterpolationMode.HighQuality);
 
                     RenderTriangleSelector(context);
 				}
@@ -157,7 +158,7 @@ namespace FluentAvalonia.UI.Controls
             base.OnKeyDown(e);
         }
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 			if (change.Property == BorderBrushProperty ||
@@ -250,7 +251,7 @@ namespace FluentAvalonia.UI.Controls
 				if (_tempBitmap == null || !(_tempBitmap is WriteableBitmap))
 				{
 					_tempBitmap?.Dispose();
-					_tempBitmap = new WriteableBitmap(new PixelSize(500, 500), new Vector(96, 96), Avalonia.Platform.PixelFormat.Bgra8888, Avalonia.Platform.AlphaFormat.Premul);
+					_tempBitmap = new WriteableBitmap(new PixelSize(500, 500), new Vector(96, 96), PixelFormat.Bgra8888, AlphaFormat.Premul);
 				}
 
 				// Component represents the third, non-displayed, color component

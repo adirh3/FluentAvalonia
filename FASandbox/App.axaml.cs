@@ -2,22 +2,23 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
-namespace FASandbox;
-
-public class App : Application
+namespace FASandbox
 {
-	public override void Initialize()
+	public class App : Application
 	{
-		AvaloniaXamlLoader.Load(this);
-	}
-
-	public override void OnFrameworkInitializationCompleted()
-	{
-		if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+		public override void Initialize()
 		{
-			desktop.MainWindow = new MainWindow();
+			AvaloniaXamlLoader.Load(this);
 		}
 
-		base.OnFrameworkInitializationCompleted();
+		public override void OnFrameworkInitializationCompleted()
+		{
+			if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+			{
+				desktop.MainWindow = new MainWindow();
+			}
+
+			base.OnFrameworkInitializationCompleted();
+		}
 	}
 }

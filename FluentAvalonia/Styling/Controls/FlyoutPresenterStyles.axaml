@@ -106,7 +106,7 @@
                                   BorderBrush="{TemplateBinding BorderBrush}"
                                   BorderThickness="{TemplateBinding BorderThickness}"
                                   TextBlock.FontFamily="{TemplateBinding FontFamily}"
-                                  TextBlock.FontSize="{TemplateBinding FontSize}"
+                                  TextElement.FontSize="{TemplateBinding FontSize}"
                                   TextBlock.Foreground="{TemplateBinding Foreground}"
                                   Content="{TemplateBinding Content}"
                                   ContentTemplate="{TemplateBinding ContentTemplate}"

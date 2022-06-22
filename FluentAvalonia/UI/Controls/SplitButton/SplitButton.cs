@@ -62,13 +62,13 @@ namespace FluentAvalonia.UI.Controls
 			_hasLoaded = true;
 		}
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 			if (change.Property == FlyoutProperty)
 			{
 				//Must unregister events here while we have ref to old flyout
-				if (change.OldValue.GetValueOrDefault() is FlyoutBase f)
+				if (change.OldValue is FlyoutBase f)
 				{
 					f.Opened -= OnFlyoutOpened;
 					f.Closed -= OnFlyoutClosed;

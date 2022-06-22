@@ -23,6 +23,12 @@ namespace FluentAvaloniaTests.Helpers
             return new[] { _defaultFamilyName };
         }
 
+        public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch,
+            FontFamily? fontFamily, CultureInfo? culture, out Typeface typeface)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool TryMatchCharacter(int codepoint, FontStyle fontStyle, FontWeight fontWeight, FontFamily fontFamily,
             CultureInfo culture, out Typeface fontKey)
         {

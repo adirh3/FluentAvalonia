@@ -4,6 +4,7 @@ using Avalonia.Media;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using Avalonia.Controls.Documents;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -17,7 +18,7 @@ namespace FluentAvalonia.UI.Controls
         /// Defines the <see cref="Foreground"/> property
         /// </summary>
         public static readonly AttachedProperty<IBrush> ForegroundProperty =
-            TextBlock.ForegroundProperty.AddOwner<IconElement>();
+            TextElement.ForegroundProperty.AddOwner<IconElement>();
 
         /// <summary>
         /// Gets or sets a brush that describes the foreground color.
@@ -28,7 +29,7 @@ namespace FluentAvalonia.UI.Controls
             set => SetValue(ForegroundProperty, value);
         }
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 

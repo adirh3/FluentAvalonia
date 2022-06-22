@@ -10,11 +10,11 @@
     </Design.PreviewWith>
 
     <Style Selector="ui|PathIcon">
-        <Setter Property="StretchDirection" Value="Both" />
+        <Setter Property="Image.StretchDirection" Value="Both" />
     </Style>
     
     <Style Selector="ui|PathIcon[Height=NaN]">
-        <Setter Property="StretchDirection" Value="DownOnly" />
+        <Setter Property="Image.StretchDirection" Value="DownOnly" />
     </Style>
     
 </Styles>

@@ -1,7 +1,7 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
         <Border Padding="20">
-            <ListBox SelectedIndex="0">
+            <ListBox>
                 <ListBoxItem>Test</ListBoxItem>
                 <ListBoxItem>Test</ListBoxItem>
                 <ListBoxItem>Test</ListBoxItem>
@@ -82,8 +82,7 @@
                             VerticalAlignment="Center"
                             Width="3"
                             Height="16"
-							Margin="2.5 0 0 0"
-                            UseLayoutRounding="False"
+							Margin="1 0 0 0"
                             CornerRadius="{DynamicResource ControlCornerRadius}"
 							Background="{DynamicResource AccentFillColorDefaultBrush}" />
                 </Panel>
@@ -103,8 +102,8 @@
 	</Style>
 	
     <Style Selector="ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
-        <Setter Property="TextBlock.FontWeight" Value="Normal" />
-        <Setter Property="TextBlock.FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="TextElement.FontWeight" Value="Normal" />
+        <Setter Property="TextElement.FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
     </Style>
 
     <!--  Disabled State  -->

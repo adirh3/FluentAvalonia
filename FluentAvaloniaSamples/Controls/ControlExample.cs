@@ -306,24 +306,24 @@ namespace FluentAvaloniaSamples.Controls
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == OptionsProperty)
             {
-                PseudoClasses.Set(":options", change.NewValue.GetValueOrDefault() != null);
+                PseudoClasses.Set(":options", change.NewValue != null);
             }
             else if (change.Property == BoundsProperty)
             {
-                var wid = change.NewValue.GetValueOrDefault<Rect>().Width;
+                var wid = change.GetNewValue<Rect>().Width;
 
                 PseudoClasses.Set(":adaptiveW", wid < 725);
                 PseudoClasses.Set(":small", wid < 500);
             }
             else if (change.Property == IsOptionsExpandedProperty)
             {
-                PseudoClasses.Set(":optionsfull", change.NewValue.GetValueOrDefault<bool>());
+                PseudoClasses.Set(":optionsfull", change.GetNewValue<bool>());
             }
         }
 

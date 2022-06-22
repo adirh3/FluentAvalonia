@@ -33,12 +33,12 @@ namespace FluentAvalonia.UI.Controls
             ForwardStack = forw;
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
             if (change.Property == ContentProperty)
             {
-                if (change.NewValue.GetValueOrDefault() == null)
+                if (change.NewValue == null)
                 {
                     CurrentEntry = null;
                 }
@@ -47,10 +47,10 @@ namespace FluentAvalonia.UI.Controls
             {
                 if (!_isNavigating)
                 {
-                    if (change.NewValue.GetValueOrDefault() is null)
+                    if (change.NewValue is null)
                         throw new InvalidOperationException("SourcePageType cannot be null. Use Content instead.");
 
-                    Navigate(change.NewValue.GetValueOrDefault<Type>());
+                    Navigate(change.GetNewValue<Type>());
                 }
             }
         }
@@ -523,7 +523,9 @@ namespace FluentAvalonia.UI.Controls
             {
                 if (_cache[i].GetType() == srcPageType)
                 {
-                    return _cache[i];
+                    var item = _cache[i];
+                    _cache.RemoveAt(i);
+                    return item;
                 }
             }
 

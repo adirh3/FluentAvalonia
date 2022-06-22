@@ -6,6 +6,7 @@
              xmlns:local="using:FluentAvaloniaSamples.Controls"
              xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
              xmlns:aedit="using:AvaloniaEdit"
+             Background="Transparent"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluentAvaloniaSamples.Views.MainView">
     <UserControl.Styles>
@@ -50,7 +51,7 @@
                                                   Content="{TemplateBinding Content}"
                                                   HorizontalAlignment="Center"
                                                   VerticalAlignment="Bottom"
-                                                  TextBlock.FontSize="10"
+                                                  TextElement.FontSize="10"
                                                   Padding="0 4"
                                                   Margin="0 -15 0 3"
                                                   DockPanel.Dock="Bottom">

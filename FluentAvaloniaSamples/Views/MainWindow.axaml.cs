@@ -5,10 +5,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using Avalonia.Media.Immutable;
-using Avalonia.Platform;
-using FluentAvalonia.Core.ApplicationModel;
 using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Media;
@@ -18,35 +15,12 @@ using System.Runtime.InteropServices;
 
 namespace FluentAvaloniaSamples.Views
 {
-    public class SampleAppSplashScreen : IApplicationSplashScreen
-    {
-        public SampleAppSplashScreen()
-        {
-            var al = AvaloniaLocator.Current.GetService<IAssetLoader>();
-            using (var s = al.Open(new Uri("avares://FluentAvaloniaSamples/Assets/FAIcon.ico")))
-                AppIcon = new Bitmap(s);
-        }
-
-        string IApplicationSplashScreen.AppName { get; }
-
-        public IImage AppIcon { get; }
-
-        object IApplicationSplashScreen.SplashScreenContent { get; }
-
-        int IApplicationSplashScreen.MinimumShowTime => 2000;
-
-        void IApplicationSplashScreen.RunTasks()
-        {
-
-        }
-    }
-
-    public class MainWindow : CoreWindow
+	public class MainWindow : CoreWindow
     {
 		public MainWindow()
         {
 			InitializeComponent();
-            SplashScreen = new SampleAppSplashScreen();
+
 #if DEBUG
 			this.AttachDevTools();
 #endif
@@ -165,7 +139,7 @@ namespace FluentAvaloniaSamples.Views
 
                 color = color.LightenPercent(0.5f);
 
-                Background = new ImmutableSolidColorBrush(color, 0.9);
+                Background = new ImmutableSolidColorBrush(color, 0.5);
             }
         }
 

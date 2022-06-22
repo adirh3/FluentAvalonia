@@ -71,8 +71,8 @@ namespace FluentAvalonia.UI.Controls.Primitives
 		/// <param name="c">The IControl to retreive the value from</param>
 		/// <returns>The HorizontalOrientationMargin thickness</returns>
 		public static Thickness GetHorizontalOrientationMargin(IControl c)
-		{
-			return c.GetValue(HorizontalOrientationMarginProperty);
+        {
+            return c.GetValue<Thickness>(HorizontalOrientationMarginProperty);
 		}
 
 		/// <summary>
@@ -92,7 +92,7 @@ namespace FluentAvalonia.UI.Controls.Primitives
 		/// <returns>The VerticalOrientationMargin thickness</returns>
 		public static Thickness GetVerticalOrientationMargin(IControl c)
 		{
-			return c.GetValue(VerticalOrientationMarginProperty);
+			return c.GetValue<Thickness>(VerticalOrientationMarginProperty);
 		}
 	}
 }

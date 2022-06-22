@@ -32,6 +32,8 @@
     <x:String x:Key="ChevronDownGlyph">&#xE70D;</x:String>
     <x:String x:Key="ChevronUpGlyph">&#xE70E;</x:String>
 
+    <x:String x:Key="PreviousText">Previous</x:String>
+    <x:String x:Key="CurrentText">Current</x:String>
     <!--
         Preserving for reference:
         <x:String x:Key="ControlFastOutSlowInKeySpline">0,0,0,1</x:String>

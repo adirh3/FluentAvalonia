@@ -128,7 +128,7 @@
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                   Content=""
                                                   ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                                  TextBlock.FontWeight="{TemplateBinding FontWeight}" />
+                                                  TextElement.FontWeight="{TemplateBinding FontWeight}" />
 
                                 <ui:Button Name="CloseButton"
                                            Grid.Column="2"
@@ -208,7 +208,7 @@
     </Style>
 
     <Style Selector="ui|TabViewItem /template/ ContentPresenter#ContentPresenter">
-        <Setter Property="TextBlock.FontSize" Value="{DynamicResource TabViewItemHeaderFontSize}" />
+        <Setter Property="TextElement.FontSize" Value="{DynamicResource TabViewItemHeaderFontSize}" />
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemHeaderForeground}" />
     </Style>
 
@@ -273,7 +273,7 @@
     </Style>
     <Style Selector="ui|TabViewItem:selected /template/ ContentPresenter#ContentPresenter">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemHeaderForegroundSelected}" />
-        <Setter Property="TextBlock.FontWeight" Value="SemiBold" />
+        <Setter Property="TextElement.FontWeight" Value="SemiBold" />
     </Style>
     <Style Selector="ui|TabViewItem:selected /template/ ContentControl#IconControl">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemIconForegroundSelected}" />
@@ -298,7 +298,7 @@
     </Style>
     <Style Selector="ui|TabViewItem:disabled /template/ ContentPresenter#ContentPresenter">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemHeaderForegroundDisabled}" />
-        <Setter Property="TextBlock.FontWeight" Value="SemiBold" />
+        <Setter Property="TextElement.FontWeight" Value="SemiBold" />
     </Style>
     <Style Selector="ui|TabViewItem:disabled /template/ ContentControl#IconControl">
         <Setter Property="TextBlock.Foreground" Value="{DynamicResource TabViewItemHeaderForegroundDisabled}" />

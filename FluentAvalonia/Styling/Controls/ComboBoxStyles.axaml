@@ -149,7 +149,7 @@
                                       Grid.ColumnSpan="2"
                                       Content="{TemplateBinding Header}"
                                       ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                      TextBlock.FontWeight="{DynamicResource ComboBoxHeaderThemeFontWeight}"
+                                      TextElement.FontWeight="{DynamicResource ComboBoxHeaderThemeFontWeight}"
                                       Margin="{DynamicResource ComboBoxTopHeaderMargin}"
                                       VerticalAlignment="Top"
                                       IsVisible="False" />

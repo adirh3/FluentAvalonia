@@ -22,6 +22,7 @@ namespace FluentAvaloniaSamples
                 {
                     UseWindowsUIComposition = true,
                     EnableMultitouch = true, 
+                    UseCompositor = true,
                     CompositionBackdropCornerRadius = 8f
                 });
     }

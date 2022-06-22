@@ -33,7 +33,10 @@
     </Application.Resources>
 
     <Application.Styles>
-        <sty:FluentAvaloniaTheme />
+        <sty:FluentAvaloniaTheme 
+            UseUserAccentColorOnWindows="False"
+            UseSystemFontOnWindows="False"
+            UseSystemThemeOnWindows="False" />
         <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
         <StyleInclude Source="/Styles/OptionsDisplayItemStyles.axaml" />
         <StyleInclude Source="/Styles/ControlExampleStyles.axaml" />

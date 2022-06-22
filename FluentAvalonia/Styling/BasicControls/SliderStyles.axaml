@@ -101,7 +101,7 @@
 							<!-- Hide the header b/c property doesn't exist in Avalonia -->
 							<!--<ContentPresenter x:Name="HeaderContentPresenter" 
                                               Grid.Row="0" 
-                                              TextBlock.FontWeight="{DynamicResource SliderHeaderThemeFontWeight}" 
+                                              TextElement.FontWeight="{DynamicResource SliderHeaderThemeFontWeight}" 
                                               TextBlock.Foreground="{DynamicResource SliderHeaderForeground}"
                                               Margin="{DynamicResource SliderTopHeaderMargin}"
 											  />-->
@@ -211,7 +211,7 @@
 							<!-- Hide the header b/c property doesn't exist in Avalonia -->
                             <!--<ContentPresenter x:Name="HeaderContentPresenter" 
                                               Grid.Row="0" 
-                                              TextBlock.FontWeight="{DynamicResource SliderHeaderThemeFontWeight}" 
+                                              TextElement.FontWeight="{DynamicResource SliderHeaderThemeFontWeight}" 
                                               TextBlock.Foreground="{DynamicResource SliderHeaderForeground}"
                                               Margin="{DynamicResource SliderTopHeaderMargin}" />-->
                             <Grid x:Name="SliderContainer" Grid.Row="1">

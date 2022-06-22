@@ -102,5 +102,6 @@ namespace FluentAvalonia.UI.Controls
 		
 		private Popup _subMenu;
 		private MenuFlyoutPresenter _presenter;
-	}
+        public bool StaysOpenOnClick { get; set; }
+    }
 }

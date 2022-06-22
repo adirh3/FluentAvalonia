@@ -10,8 +10,11 @@ using Avalonia.Layout;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Collections;
+using Avalonia.LogicalTree;
 
 namespace FluentAvalonia.UI.Controls
 {
@@ -47,7 +50,7 @@ namespace FluentAvalonia.UI.Controls
 			_closeButton.Click += OnButtonClick;
 		}
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 
@@ -289,6 +292,14 @@ namespace FluentAvalonia.UI.Controls
 
 			if (this.FindAncestorOfType<DialogHost>() != null)
 			{
+				IInputElement? firstOrDefault = null;
+				if (Content is Control control)
+				{
+					firstOrDefault = FindDescendantOfTypeCore<IInputElement>(control, s => s.Focusable)
+						.FirstOrDefault();
+				}
+
+			
 				switch (DefaultButton)
 				{
 					case ContentDialogButton.Primary:
@@ -298,9 +309,10 @@ namespace FluentAvalonia.UI.Controls
 						_primaryButton.Classes.Add("accent");
 						_secondaryButton.Classes.Remove("accent");
 						_closeButton.Classes.Remove("accent");
-						if (Content is IControl cp && cp.Focusable)
+						if (firstOrDefault != null)
 						{
-							cp.Focus();
+							KeyboardDevice.Instance.SetFocusedElement(firstOrDefault, NavigationMethod.Tab,
+								KeyModifiers.None);
 						}
 						else
 						{
@@ -316,9 +328,10 @@ namespace FluentAvalonia.UI.Controls
 						_secondaryButton.Classes.Add("accent");
 						_primaryButton.Classes.Remove("accent");
 						_closeButton.Classes.Remove("accent");
-						if (Content is IControl cs && cs.Focusable)
+						if (firstOrDefault != null)
 						{
-							cs.Focus();
+							KeyboardDevice.Instance.SetFocusedElement(firstOrDefault, NavigationMethod.Tab,
+								KeyModifiers.None);
 						}
 						else
 						{
@@ -334,9 +347,10 @@ namespace FluentAvalonia.UI.Controls
 						_closeButton.Classes.Add("accent");
 						_primaryButton.Classes.Remove("accent");
 						_secondaryButton.Classes.Remove("accent");
-						if (Content is IControl cc && cc.Focusable)
+						if (firstOrDefault != null)
 						{
-							cc.Focus();
+							KeyboardDevice.Instance.SetFocusedElement(firstOrDefault, NavigationMethod.Tab,
+								KeyModifiers.None);
 						}
 						else
 						{
@@ -350,9 +364,10 @@ namespace FluentAvalonia.UI.Controls
 						_primaryButton.Classes.Remove("accent");
 						_secondaryButton.Classes.Remove("accent");
 
-						if (Content is IControl cd && cd.Focusable)
+						if (firstOrDefault != null)
 						{
-							cd.Focus();
+							KeyboardDevice.Instance.SetFocusedElement(firstOrDefault, NavigationMethod.Tab,
+								KeyModifiers.None);
 						}
 						else if (_primaryButton.IsVisible)
 						{
@@ -375,6 +390,25 @@ namespace FluentAvalonia.UI.Controls
 				}
 			}
 		}
+        
+        protected static IEnumerable<T> FindDescendantOfTypeCore<T>(ILogical visual, Predicate<T> predicate)
+            where T : class
+        {
+            if (visual is null)
+                yield break;
+
+            IAvaloniaReadOnlyList<ILogical> visualChildren = visual.LogicalChildren;
+
+            foreach (ILogical child in visualChildren)
+            {
+                if (child is T result && predicate(result)) yield return result;
+
+                foreach (T item in FindDescendantOfTypeCore(child, predicate))
+                {
+                    yield return item;
+                }
+            }
+        }
 
 		// This is the exit point for the ContentDialog
 		// This method MUST be called to finalize everything

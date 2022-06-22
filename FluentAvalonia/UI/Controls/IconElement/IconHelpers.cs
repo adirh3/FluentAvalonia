@@ -1,6 +1,7 @@
 ﻿using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Data;
 
 namespace FluentAvalonia.UI.Controls
@@ -11,10 +12,10 @@ namespace FluentAvalonia.UI.Controls
         {
             var fi = new FontIcon
             {
-                [!TextBlock.FontWeightProperty] = fis[!TextBlock.FontWeightProperty],
+                [!TextElement.FontWeightProperty] = fis[!TextElement.FontWeightProperty],
                 [!TextBlock.FontStyleProperty] = fis[!TextBlock.FontStyleProperty],
                 [!TextBlock.FontFamilyProperty] = fis[!TextBlock.FontFamilyProperty],
-                [!TextBlock.FontSizeProperty] = fis[!TextBlock.FontSizeProperty],
+                [!TextElement.FontSizeProperty] = fis[!TextElement.FontSizeProperty],
                 [!FontIcon.GlyphProperty] = fis[!FontIconSource.GlyphProperty]
             };
 
@@ -36,9 +37,7 @@ namespace FluentAvalonia.UI.Controls
         {
             var pi = new PathIcon
             {
-                [!PathIcon.DataProperty] = pis[!PathIconSource.DataProperty],
-                [!PathIcon.StretchProperty] = pis[!PathIconSource.StretchProperty],
-                [!PathIcon.StretchDirectionProperty] = pis[!PathIconSource.StretchDirectionProperty]
+                [!PathIcon.DataProperty] = pis[!PathIconSource.DataProperty]
             };
 
             if (pis.IsSet(IconSource.ForegroundProperty))
@@ -60,7 +59,7 @@ namespace FluentAvalonia.UI.Controls
             var si = new SymbolIcon
             {
                 [!SymbolIcon.SymbolProperty] = sis[!SymbolIconSource.SymbolProperty],
-                [!TextBlock.FontSizeProperty] = sis[!TextBlock.FontSizeProperty]
+                [!TextElement.FontSizeProperty] = sis[!TextElement.FontSizeProperty]
             };
 
             if (sis.IsSet(IconSource.ForegroundProperty))

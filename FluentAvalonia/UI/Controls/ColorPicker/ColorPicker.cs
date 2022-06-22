@@ -1,11 +1,13 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Media;
 using System;
 using FluentAvalonia.UI.Media;
 using FluentAvalonia.Core;
+using System.Collections.Generic;
 using Avalonia.Interactivity;
 
 namespace FluentAvalonia.UI.Controls
@@ -211,14 +213,14 @@ namespace FluentAvalonia.UI.Controls
 			UpdateColorAndControls(Color, ColorUpdateReason.Initial);
 		}
 
-		protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+		protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
 		{
 			base.OnPropertyChanged(change);
 			if (change.Property == ColorProperty)
 			{
 				if (!_ignoreColorChange)
 				{
-					UpdateColorAndControls(change.NewValue.GetValueOrDefault<Color2>(), ColorUpdateReason.Programmatic);
+					UpdateColorAndControls(change.GetNewValue<Color2>(), ColorUpdateReason.Programmatic);
 				}
 			}
 		}
@@ -774,21 +776,6 @@ namespace FluentAvalonia.UI.Controls
 			{
 				_textEntryTabHost.Children.Remove(_textEntryArea);
 				_rootGrid.Children.Add(_textEntryArea);
-
-                // If we expand the ColorPicker and we were in the Text entry area while compact
-                // make sure we find another tab to switch to so we don't end up with a blank
-                // space from the text area being moved
-                if (_displayItemTabControl.SelectedIndex == 4)
-                {
-                    for (int i = 3; i >= 0; i--)
-                    {
-                        if (_displayItemTabControl.Items.ElementAt(i) is TabItem ti && ti.IsVisible)
-                        {
-                            _displayItemTabControl.SelectedIndex = i;
-                            break;
-                        }
-                    }
-                }
 			}
 
 			UpdatePickerComponents();
