@@ -1,26 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <RestoreAdditionalProjectSources>
-      packages
-    </RestoreAdditionalProjectSources>
+      <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <AvaloniaResource Include="Assets\**"/>
-    <AvaloniaResource Include="Pages\SampleCode\**"/>
+    <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="Pages\SampleCode\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.999-cibuild0021317-beta"/>
-    <PackageReference Include="AvaloniaEdit" Version="0.10.13997-ava-comp"/>
+    <PackageReference Include="Avalonia" Version="0.10.999-cibuild0021305-beta" />
+    <PackageReference Include="AvaloniaEdit" Version="0.10.13997-ava-comp" />
 
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.999-cibuild0021317-beta"/>
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.999-cibuild0021317-beta"/>
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.999-cibuild0021305-beta" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.999-cibuild0021305-beta" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FluentAvalonia\FluentAvalonia.csproj"/>
+    <ProjectReference Include="..\FluentAvalonia\FluentAvalonia.csproj" />
   </ItemGroup>
 </Project>

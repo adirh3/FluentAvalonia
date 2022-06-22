@@ -20,7 +20,7 @@ namespace FluentAvaloniaSamples
                 .LogToTrace()
                 .With(new Win32PlatformOptions()
                 {
-                    UseWindowsUIComposition = true,
+                    UseWindowsUIComposition = false,
                     EnableMultitouch = true, 
                     UseCompositor = true,
                     CompositionBackdropCornerRadius = 8f
