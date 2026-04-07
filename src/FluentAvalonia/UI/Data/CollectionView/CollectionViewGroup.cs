@@ -469,7 +469,7 @@ internal class SpecializedCollectionViewGroup : CollectionViewGroup, IComparer<o
         return 0;
     }
 
-    private static object EvaluateBinding(IBinding binding, object item)
+    private static object EvaluateBinding(BindingBase binding, object item)
     {
         _bindingHelper ??= new GroupedDataCollectionView.BindingHelper();
 

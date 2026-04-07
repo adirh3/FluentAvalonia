@@ -89,7 +89,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         }
         else if (change.Property == DisplayMemberBindingProperty)
         {
-            var temp = change.GetNewValue<IBinding>();
+            var temp = change.GetNewValue<BindingBase>();
             if (temp != null)
             {
                 _displayMemberTemplate = new FuncDataTemplate<object>((_, _) =>
@@ -1070,7 +1070,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         public static readonly StyledProperty<object> ValueProperty =
             AvaloniaProperty.Register<BindingHelper, object>("Value");
 
-        public object Evaluate(IBinding binding, object dataContext)
+        public object Evaluate(BindingBase binding, object dataContext)
         {
             dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
@@ -1083,16 +1083,18 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
             if (!dataContext.Equals(DataContext))
                 DataContext = dataContext;
 
-            if (_lastBinding != binding)
+            if (!ReferenceEquals(_lastBinding, binding))
             {
                 _lastBinding = binding;
-                var ib = binding.Initiate(this, ValueProperty);
-                BindingOperations.Apply(this, ValueProperty, ib, null);
+
+                _bindingExpr?.Dispose();                 // optional but recommended when rebinding
+                _bindingExpr = Bind(ValueProperty, binding);
             }
 
             return GetValue(ValueProperty);
         }
 
-        private IBinding _lastBinding;
+        private BindingBase? _lastBinding;
+        private BindingExpressionBase? _bindingExpr;
     }
 }

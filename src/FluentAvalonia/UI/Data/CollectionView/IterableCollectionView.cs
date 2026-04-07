@@ -675,7 +675,7 @@ public sealed class IterableCollectionView : ICollectionView, IAdvancedCollectio
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private object EvaluateBinding(IBinding binding, object item)
+    private object EvaluateBinding(BindingBase binding, object item)
     {
         _bindingHelper ??= new GroupedDataCollectionView.BindingHelper();
 

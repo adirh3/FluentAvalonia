@@ -50,25 +50,25 @@ public class VisualStateHelper
         if (string.IsNullOrEmpty(classes))
             return;
 
-        CharacterReader cr = new CharacterReader(classes.AsSpan());
-
-        while (!cr.End)
-        {
-            var @class = cr.TakeUntil(',');
-
-            if (@class[@class.Length - 1] == '!')
-            {
-                @class = @class.Slice(0, @class.Length - 1);
-                ((IPseudoClasses)element.Classes).Set(@class.ToString(), false);
-            }
-            else
-            {
-                ((IPseudoClasses)element.Classes).Set(@class.ToString(), set);
-            }
-
-            if (!cr.End)
-                cr.Skip(1);
-        }
+        // CharacterReader cr = new CharacterReader(classes.AsSpan());
+        //
+        // while (!cr.End)
+        // {
+        //     var @class = cr.TakeUntil(',');
+        //
+        //     if (@class[@class.Length - 1] == '!')
+        //     {
+        //         @class = @class.Slice(0, @class.Length - 1);
+        //         ((IPseudoClasses)element.Classes).Set(@class.ToString(), false);
+        //     }
+        //     else
+        //     {
+        //         ((IPseudoClasses)element.Classes).Set(@class.ToString(), set);
+        //     }
+        //
+        //     if (!cr.End)
+        //         cr.Skip(1);
+        // }
     }
 
 }
