@@ -1,0 +1,23 @@
+<Project>
+  <!-- Replace FluentAvalonia's Avalonia PackageReferences with ProjectReferences to sibling Avalonia submodule -->
+  <ItemGroup>
+    <PackageReference Remove="Avalonia" />
+    <PackageReference Remove="Avalonia.Controls.ColorPicker" />
+    <PackageReference Remove="Avalonia.Skia" />
+    <PackageReference Remove="Avalonia.Controls.DataGrid" />
+
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Avalonia\packages\Avalonia\Avalonia.csproj" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Avalonia\src\Avalonia.Controls.ColorPicker\Avalonia.Controls.ColorPicker.csproj" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Avalonia\src\Skia\Avalonia.Skia\Avalonia.Skia.csproj" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Avalonia\external\Avalonia.Controls.DataGrid\src\Avalonia.Controls.DataGrid\Avalonia.Controls.DataGrid.csproj" />
+  </ItemGroup>
+
+  <!-- Avalonia XAML compilation (same consumer-facing files as the NuGet package, with source-build DLL path) -->
+  <PropertyGroup>
+    <AvaloniaBuildTasksLocation>$(MSBuildThisFileDirectory)..\Avalonia\src\Avalonia.Build.Tasks\bin\Debug\netstandard2.0\Avalonia.Build.Tasks.dll</AvaloniaBuildTasksLocation>
+    <AvaloniaUseCompiledBindingsByDefault Condition="'$(AvaloniaUseCompiledBindingsByDefault)' == ''">true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\Avalonia\packages\Avalonia\AvaloniaBuildTasks.props" />
+  <Import Project="$(MSBuildThisFileDirectory)..\Avalonia\packages\Avalonia\AvaloniaBuildTasks.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)..\Avalonia\src\tools\Avalonia.Generators\Avalonia.Generators.props" />
+</Project>

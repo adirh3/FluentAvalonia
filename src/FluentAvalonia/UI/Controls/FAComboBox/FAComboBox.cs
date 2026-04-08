@@ -825,7 +825,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         }
         else
         {
-            return _bindingHelper.Evaluate(DisplayMemberBinding, item).ToString();
+            return _bindingHelper.Evaluate((BindingBase)DisplayMemberBinding, item).ToString();
         }
     }
 
@@ -1038,7 +1038,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
             else
             {
                 // Item is a ViewModel
-                var value = binding is null ? item.ToString() : _bindingHelper.Evaluate(binding, item);
+                var value = binding is null ? item.ToString() : _bindingHelper.Evaluate((BindingBase)binding, item);
 
                 if (value != null && value.Equals(text))
                 {
