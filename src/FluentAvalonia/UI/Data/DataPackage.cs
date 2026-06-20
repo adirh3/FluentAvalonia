@@ -1,11 +1,13 @@
-﻿using Avalonia.Input;
+﻿using System;
+using System.Collections.Generic;
+using Avalonia.Input;
 
 namespace FluentAvalonia.UI.Data;
 
 /// <summary>
 /// This class is part of the ListView logic, which has been suspended for now
 /// </summary>
-public class DataPackage : IDataObject
+public class DataPackage
 {
     /// <summary>
     /// Gets or sets the requested operation for the data object
@@ -22,21 +24,18 @@ public class DataPackage : IDataObject
     public IEnumerable<string> GetDataFormats() =>
         _data.Keys;
 
-    public IEnumerable<string> GetFileNames() =>
-        Get(DataFormats.Files) as IEnumerable<string>;
-
     /// <summary>
     /// Gets the data for the operation as a string
     /// </summary>
     public string GetText() =>
-        Get(DataFormats.Text) as string;
+        Get("Text") as string;
 
     /// <summary>
     /// Sets string content as the data for the operation
     /// </summary>
     /// <param name="txt"></param>
     public void SetText(string txt) =>
-        _data.Add(DataFormats.Text, txt);
+        _data.Add("Text", txt);
 
     /// <summary>
     /// Sets the data for the operation with the specified format

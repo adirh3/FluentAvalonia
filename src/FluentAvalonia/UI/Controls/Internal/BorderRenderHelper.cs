@@ -123,7 +123,7 @@ internal class BorderRenderHelper
 
             if (_backgroundSizing == BackgroundSizing.InnerBorderEdge)
             {
-                if (!MathUtilities.IsZero(borderThickness))
+                if (borderThickness > 1e-10)
                 {
                     rect = rect.Deflate(borderThickness);
                 }

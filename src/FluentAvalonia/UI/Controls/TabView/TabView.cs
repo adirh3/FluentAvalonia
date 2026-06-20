@@ -210,7 +210,7 @@ public partial class TabView : TemplatedControl
     }
 
 
-    private void OnListViewGettingFocus(object sender, GotFocusEventArgs e)
+    private void OnListViewGettingFocus(object sender, FocusChangedEventArgs e)
     {
         // TabViewItems overlap each other by one pixel in order to get the desired visuals for the separator.
         // This causes problems with 2d focus navigation. Because the items overlap, pressing Down or Up from a
@@ -717,7 +717,7 @@ public partial class TabView : TemplatedControl
 
                 if (shouldMoveFocusToNewTab)
                 {
-                    var focusable = KeyboardNavigationHandler.GetNext(_tabContentPresenter, NavigationDirection.Next);
+                    var focusable = TopLevel.GetTopLevel(this)?.FocusManager?.FindNextElement(NavigationDirection.Next, new FindNextElementOptions { FocusedElement = _tabContentPresenter });
                     if (focusable == null)
                     {
                         // If there is nothing focusable in the new tab, just move focus to the TabViewItem itself.

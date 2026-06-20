@@ -350,7 +350,7 @@ public class BreadcrumbBar : TemplatedControl
         }
     }
 
-    private void OnGettingFocus(object sender, GotFocusEventArgs args)
+    private void OnGettingFocus(object sender, FocusChangedEventArgs args)
     {
         if (_itemsRepeater is ItemsRepeater repeater)
         {

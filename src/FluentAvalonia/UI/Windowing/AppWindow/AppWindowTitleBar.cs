@@ -268,7 +268,7 @@ public class AppWindowTitleBar
         get => _height;
         set
         {
-            if (!MathUtilities.AreClose(_height, value))
+            if (Math.Abs(_height - value) > 1e-10)
             {
                 _height = value;
                 _parent.OnTitleBarHeightChanged(value);

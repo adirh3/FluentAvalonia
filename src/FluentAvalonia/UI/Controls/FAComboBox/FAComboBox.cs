@@ -312,7 +312,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         base.OnPointerReleased(e);
     }
 
-    protected override void OnGotFocus(GotFocusEventArgs e)
+    protected override void OnGotFocus(FocusChangedEventArgs e)
     {
         base.OnGotFocus(e);
         if (IsEditable && _textBox != null)
@@ -336,7 +336,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
         UpdateIsSelectionBoxHighlighted();
     }
 
-    protected override void OnLostFocus(RoutedEventArgs e)
+    protected override void OnLostFocus(FocusChangedEventArgs e)
     {
         base.OnLostFocus(e);
 
@@ -445,13 +445,13 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
         _subscriptionsOnOpen.Clear();
 
-        var toplevel = this.GetVisualRoot() as TopLevel;
+        var toplevel = this.GetPresentationSource()?.RootVisual as TopLevel;
         if (toplevel != null)
         {
             _subscriptionsOnOpen.Add(
                 toplevel.AddDisposableHandler(PointerWheelChangedEvent, (s, ev) =>
                 {
-                    if (IsDropDownOpen && (ev.Source as Visual)?.GetVisualRoot() == toplevel)
+                    if (IsDropDownOpen && (ev.Source as Visual)?.GetPresentationSource()?.RootVisual == toplevel)
                         ev.Handled = true;
                 }, RoutingStrategies.Tunnel));
         }
@@ -490,7 +490,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
                 if (container is null) // If this happens for any reason, just bail out
                     return;
 
-                var root = container.GetVisualRoot() as Visual;
+                var root = container.GetPresentationSource()?.RootVisual;
                 var transform = container.TransformToVisual(root);
                 if (!transform.HasValue) // Also bail out if this fails for any reason
                     return;
@@ -502,7 +502,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
             _popup.VerticalOffset = -dropDownDelta;
 
-            var contentRoot = _popup.Child.GetVisualRoot();
+            var contentRoot = _popup.Child.GetPresentationSource()?.RootVisual;
             if (contentRoot is PopupRoot)
             {
                 // HACK: Windowed popups appear to be +1 offset on x-axis for some reason
@@ -519,8 +519,8 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
     private void UpdateCornerRadius()
     {
         var child = _popup.Child as Visual;
-        var thisRoot = this.GetVisualRoot();
-        var popupRoot = child.GetVisualRoot();
+        var thisRoot = this.GetPresentationSource()?.RootVisual;
+        var popupRoot = child.GetPresentationSource()?.RootVisual;
 
         bool isPopupAbove = false;
         if (popupRoot is OverlayPopupHost oph)

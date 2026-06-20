@@ -535,7 +535,7 @@ public partial class NavigationView : HeaderedContentControl
 
                 if ((isTopNav && e.Key == Key.Left) || (!isTopNav && e.Key == Key.Up))
                 {
-                    var next = KeyboardNavigationHandler.GetNext(current, NavigationDirection.Previous) as InputElement;
+                    var next = TopLevel.GetTopLevel(this)?.FocusManager?.FindNextElement(NavigationDirection.Previous, new FindNextElementOptions { FocusedElement = current }) as InputElement;
                     if (next == null)
                         break;
 
@@ -586,7 +586,7 @@ public partial class NavigationView : HeaderedContentControl
                 }
                 else if ((isTopNav && e.Key == Key.Right) || (!isTopNav && e.Key == Key.Down))
                 {
-                    var next = KeyboardNavigationHandler.GetNext(current, NavigationDirection.Next) as InputElement;
+                    var next = TopLevel.GetTopLevel(this)?.FocusManager?.FindNextElement(NavigationDirection.Next, new FindNextElementOptions { FocusedElement = current }) as InputElement;
                     if (next == null)
                         break;
 
@@ -963,7 +963,7 @@ public partial class NavigationView : HeaderedContentControl
         }
     }
 
-    private void OnRepeaterGettingFocus(object sender, GotFocusEventArgs e)
+    private void OnRepeaterGettingFocus(object sender, FocusChangedEventArgs e)
     {
         // if focus change was invoked by tab key
         // and there is selected item in ItemsRepeater that gatting focus
@@ -1833,7 +1833,7 @@ public partial class NavigationView : HeaderedContentControl
         }
     }
 
-    private void OnNavigationViewItemGotFocus(object sender, GotFocusEventArgs e)
+    private void OnNavigationViewItemGotFocus(object sender, FocusChangedEventArgs e)
     {
         var nvi = (NavigationViewItem)sender;
 
@@ -2056,7 +2056,7 @@ public partial class NavigationView : HeaderedContentControl
 
         //We couldn't find another item to focus, move to next part of pane (this will also handle
         //the jump from Primary items to footer)
-        var next = KeyboardNavigationHandler.GetNext(nvi, NavigationDirection.Next) as Control;
+        var next = TopLevel.GetTopLevel(this)?.FocusManager?.FindNextElement(NavigationDirection.Next, new FindNextElementOptions { FocusedElement = nvi }) as Control;
         if (!VerifyInPane(next, IsTopNavigationView ? _topNavGrid : _paneContentGrid))
             return;
 

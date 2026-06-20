@@ -452,7 +452,7 @@ public partial class RangeSlider : TemplatedControl
             
             if (delta > 0)
             {
-                if (MathUtilities.AreClose(re, max))
+                if (Math.Abs(re - max) < 1e-10)
                     return;
 
                 // Drag delta is too large, constrain it back
@@ -461,7 +461,7 @@ public partial class RangeSlider : TemplatedControl
             }
             else if (delta < 0)
             {
-                if (MathUtilities.AreClose(rs, min))
+                if (Math.Abs(rs - min) < 1e-10)
                     return;
 
                 if (rs + delta < min)
@@ -493,7 +493,7 @@ public partial class RangeSlider : TemplatedControl
     {
         var position = e.GetCurrentPoint(_containerCanvas).Position.X;
 
-        var mods = TopLevel.GetTopLevel(this).PlatformSettings.HotkeyConfiguration.CommandModifiers;
+        var mods = this.GetPlatformSettings()?.HotkeyConfiguration.CommandModifiers ?? KeyModifiers.Control;
         if (mods == KeyModifiers.None)
             mods = KeyModifiers.Control;
 

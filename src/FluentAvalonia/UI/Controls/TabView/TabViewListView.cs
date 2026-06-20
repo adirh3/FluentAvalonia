@@ -185,6 +185,7 @@ public class TabViewListView : ListBox
             if (currentPoint.Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed)
             {
                 _initialPoint = args.GetPosition(this);
+                _lastPointerPressedArgs = args;
                 _dragItem = (args.Source as Visual).FindAncestorOfType<TabViewItem>(true);
                 _dragIndex = IndexFromContainer(_dragItem);
 
@@ -313,7 +314,7 @@ public class TabViewListView : ListBox
 
     private void UpdateDragInfo()
     {
-        FAUISettings.GetSystemDragSize(VisualRoot.RenderScaling, out _cxDrag, out _cyDrag);
+        FAUISettings.GetSystemDragSize((VisualRoot as TopLevel)?.RenderScaling ?? 1.0, out _cxDrag, out _cyDrag);
     }
 
     private void BeginReorder(PointerEventArgs args)
@@ -487,8 +488,19 @@ public class TabViewListView : ListBox
             }
         }
 
-        var dropResult =
-            await DragDrop.DoDragDrop(args, disArgs.Data, effects);
+        // Convert DataPackage to DataTransfer for the new DragDrop API
+        var dataTransfer = new DataTransfer();
+        foreach (var format in disArgs.Data.GetDataFormats())
+        {
+            var value = disArgs.Data.Get(format);
+            if (value is string strValue)
+                dataTransfer.Add(DataTransferItem.CreateText(strValue));
+        }
+
+        var triggerArgs = _lastPointerPressedArgs;
+        var dropResult = triggerArgs != null
+            ? await DragDrop.DoDragDropAsync(triggerArgs, dataTransfer, effects)
+            : DragDropEffects.None;
 
         _isInDrag = false;
         if (hasReorder)
@@ -706,6 +718,7 @@ public class TabViewListView : ListBox
     private bool _isInReorder = false;
     private bool _processReorder;
     private Point? _initialPoint;
+    private PointerPressedEventArgs _lastPointerPressedArgs;
     private double _cxDrag = double.NaN;
     private double _cyDrag = double.NaN;
 

@@ -606,7 +606,7 @@ public partial class TaskDialog : ContentControl
         }
         else
         {
-            var next = KeyboardNavigationHandler.GetNext(this, NavigationDirection.Next);
+            var next = TopLevel.GetTopLevel(this)?.FocusManager?.FindNextElement(NavigationDirection.Next, new FindNextElementOptions { FocusedElement = this });
             if (next != null)
             {
                 next.Focus();

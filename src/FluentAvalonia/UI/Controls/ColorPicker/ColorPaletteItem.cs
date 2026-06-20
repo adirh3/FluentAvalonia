@@ -205,7 +205,7 @@ public partial class ColorPaletteItem : Control
                 }
 
                 var rect = new Rect(_size);
-                if (!MathUtilities.IsZero(borderThickness))
+                if (borderThickness > 1e-10)
                     rect = rect.Deflate(borderThickness * 0.5);
                 var rrect = new RoundedRect(rect, _cornerRadius.TopLeft, _cornerRadius.TopRight,
                     _cornerRadius.BottomRight, _cornerRadius.BottomLeft);

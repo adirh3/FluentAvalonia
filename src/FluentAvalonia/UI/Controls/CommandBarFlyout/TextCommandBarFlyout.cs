@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Input.Platform;
 using FluentAvalonia.UI.Input;
 
 namespace FluentAvalonia.UI.Controls;
@@ -280,7 +281,7 @@ public class TextCommandBarFlyout : CommandBarFlyout
                 }
                 else if (target is TextBlock txtB)
                 {
-                    var txt = await TopLevel.GetTopLevel(target).Clipboard.GetTextAsync();
+                    var txt = await TopLevel.GetTopLevel(target).Clipboard.TryGetTextAsync();
                     if (txt != null)
                     {
                         txtB.Text = txt;

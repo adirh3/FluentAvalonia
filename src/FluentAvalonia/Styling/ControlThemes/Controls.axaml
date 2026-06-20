@@ -5,7 +5,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/DataValidationErrorsStyles.axaml" />
-                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/WindowStyles.axaml" />
+                <!--<MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/WindowStyles.axaml" />-->
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/ButtonStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/ToggleButtonStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/AutoCompleteBoxStyles.axaml" />
@@ -16,13 +16,13 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/EmbeddableControlRootStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/LabelStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/ItemsControlStyles.axaml" />
-                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/OverlayPopupHostStyles.axaml" />
-                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/PopupRootStyles.axaml" />
+                <!--<MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/OverlayPopupHostStyles.axaml" />-->
+                <!--<MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/PopupRootStyles.axaml" />-->
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/ToolTipStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/WindowNotificationManagerStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/CarouselStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/ContentControlStyles.axaml" />
-                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/NativeMenuBarStyles.axaml" />
+                <!--<MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/NativeMenuBarStyles.axaml" />-->
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/ButtonSpinnerStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/RepeatButtonStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/GridSplitterStyles.axaml" />
@@ -30,7 +30,7 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/DropDownButtonStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/CalendarStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/CalendarDatePickerStyles.axaml" />
-                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/CaptionButtonStyles.axaml" />
+                <!--<MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/CaptionButtonStyles.axaml" />-->
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/CheckBoxStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/ListBoxStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/MenuStyles.axaml" />
@@ -51,10 +51,10 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/FlyoutPresenterStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/DatePickerStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/TimePickerStyles.axaml" />
-                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/TitleBarStyles.axaml" />
+                <!--<MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/TitleBarStyles.axaml" />-->
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/TransitioningContentControlStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/ColorPicker/ColorPickerStyles.axaml" />
-                <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridStyles.axaml" />
+                <!--<MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/DataGrid/DataGridStyles.axaml" />-->
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/RefreshControlStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/PathIcon.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/BasicControls/HyperlinkButtonStyles.axaml" />
@@ -112,7 +112,7 @@
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FAComboBox/FAComboBoxStyles.axaml" />
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/FAComboBox/FAComboBoxItemStyles.axaml" />
 
-                <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/AppWindowStyles.axaml" />
+                <!--<MergeResourceInclude Source="/Styling/ControlThemes/FAControls/AppWindowStyles.axaml" />-->
 
                 <MergeResourceInclude Source="/Styling/ControlThemes/FAControls/RangeSliderStyles.axaml" />
 

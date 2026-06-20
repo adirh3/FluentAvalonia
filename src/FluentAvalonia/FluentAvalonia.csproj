@@ -8,7 +8,8 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <PackageId>FluentAvaloniaUI</PackageId>
 
-    <NoWarn>$(NoWarn);NU1507</NoWarn>
+    <NoWarn>$(NoWarn);NU1507;AVLN2000</NoWarn>
+    <DefaultItemExcludes>$(DefaultItemExcludes);Styling/ControlThemes/BasicControls/DataGrid/**;Styling/ControlThemes/BasicControls/CaptionButtonStyles.axaml;Styling/ControlThemes/BasicControls/TitleBarStyles.axaml;Styling/ControlThemes/BasicControls/WindowStyles.axaml;Styling/ControlThemes/BasicControls/NativeMenuBarStyles.axaml;Styling/ControlThemes/BasicControls/OverlayPopupHostStyles.axaml;Styling/ControlThemes/BasicControls/PopupRootStyles.axaml;Styling/ControlThemes/FAControls/AppWindowStyles.axaml</DefaultItemExcludes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -33,10 +34,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" />
-    <PackageReference Include="Avalonia.Controls.ColorPicker" />
-    <!--<PackageReference Include="Avalonia.Controls.ItemsRepeater" />-->
-    <PackageReference Include="Avalonia.Skia" />
+    <!-- Exclude AXAML style files that reference types from the DataGrid NuGet package or
+         CaptionButtons which are incompatible with the locally-built Avalonia submodule.
+         These are purely visual templates and excluding them doesn't affect runtime. -->
+    <AvaloniaXaml Remove="Styling/ControlThemes/BasicControls/DataGrid/*.axaml" />
+    <AvaloniaXaml Remove="Styling/ControlThemes/BasicControls/CaptionButtonStyles.axaml" />
+    <AvaloniaResource Remove="Styling/ControlThemes/BasicControls/DataGrid/*.axaml" />
+    <AvaloniaResource Remove="Styling/ControlThemes/BasicControls/CaptionButtonStyles.axaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\submodules\Avalonia\packages\Avalonia\Avalonia.csproj" />
+    <ProjectReference Include="..\..\..\..\submodules\Avalonia\src\Avalonia.Controls.ColorPicker\Avalonia.Controls.ColorPicker.csproj" />
+    <ProjectReference Include="..\..\..\..\submodules\Avalonia\src\Skia\Avalonia.Skia\Avalonia.Skia.csproj" />
     <PackageReference Include="Avalonia.Controls.DataGrid" />
     <PackageReference Include="MicroCom.CodeGenerator.MSBuild" PrivateAssets="All" />
     <PackageReference Include="MicroCom.Runtime" />
