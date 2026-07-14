@@ -150,6 +150,7 @@ public class RangeSliderTests : IDisposable
 
         //// Reset to zero so math is easier
         rs.RangeStart = 0;
+        _window.UpdateLayout();
 
         downPoint = TransformToHost(minThumb);
         delta = new Point(rs.DragWidth / 2, 0);
@@ -186,6 +187,7 @@ public class RangeSliderTests : IDisposable
 
         //// Reset to zero so math is easier
         rs.RangeEnd = 100;
+        _window.UpdateLayout();
 
         downPoint = TransformToHost(minThumb);
         delta = new Point(-rs.DragWidth / 2, 0);

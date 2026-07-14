@@ -3,6 +3,7 @@ using FluentAvaloniaTests.Helpers;
 using Avalonia.Headless;
 using FluentAvalonia.Styling;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Themes.Fluent;
 
 [assembly: AvaloniaTestApplication(typeof(UnitTestApplication))]
 
@@ -21,6 +22,7 @@ public class UnitTestApplication : Application
     private static void InitStyles(AppBuilder ab)
     {
         // FATheme requires Application.Current to be set, so we run this after Application setup has finished
+        Current.Styles.Add(new FluentTheme());
         Current.Styles.Add(new FluentAvaloniaTheme());
     }
 }
