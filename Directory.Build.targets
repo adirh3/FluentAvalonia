@@ -4,12 +4,10 @@
     <PackageReference Remove="Avalonia" />
     <PackageReference Remove="Avalonia.Controls.ColorPicker" />
     <PackageReference Remove="Avalonia.Skia" />
-    <PackageReference Remove="Avalonia.Controls.DataGrid" />
 
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\Avalonia\packages\Avalonia\Avalonia.csproj" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\Avalonia\src\Avalonia.Controls.ColorPicker\Avalonia.Controls.ColorPicker.csproj" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)..\Avalonia\src\Skia\Avalonia.Skia\Avalonia.Skia.csproj" />
-    <ProjectReference Include="$(MSBuildThisFileDirectory)..\Avalonia\external\Avalonia.Controls.DataGrid\src\Avalonia.Controls.DataGrid\Avalonia.Controls.DataGrid.csproj" />
   </ItemGroup>
 
   <!-- Avalonia XAML compilation (same consumer-facing files as the NuGet package, with source-build DLL path) -->
