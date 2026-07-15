@@ -106,7 +106,7 @@ public partial class TabViewWindowingSample : AppWindow
 
     private void TabStripDrop(object sender, DragEventArgs e)
     {
-        if (e.Data.Contains(DataIdentifier) && e.Data.Get(DataIdentifier) is TabViewItem tvi)
+        if (DataPackage.TryGetData(e.DataTransfer, DataIdentifier, out TabViewItem tvi))
         {
             var destinationTabView = sender as TabView;
 
@@ -156,7 +156,7 @@ public partial class TabViewWindowingSample : AppWindow
 
     private void TabStripDragOver(object sender, DragEventArgs e)
     {
-        if (e.Data.Contains(DataIdentifier))
+        if (DataPackage.Contains(e.DataTransfer, DataIdentifier))
         {
             // For dragover, use the standard DragEffects property
             e.DragEffects = DragDropEffects.Move;

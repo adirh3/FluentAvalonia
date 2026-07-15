@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Avalonia.Input;
 
@@ -9,6 +10,10 @@ namespace FluentAvalonia.UI.Data;
 /// </summary>
 public class DataPackage
 {
+    private static readonly DataFormat<string> DataPackageIdFormat =
+        DataFormat.CreateStringApplicationFormat("FluentAvalonia.DataPackageId");
+    private static readonly ConcurrentDictionary<string, IReadOnlyDictionary<string, object>> Payloads = new();
+
     /// <summary>
     /// Gets or sets the requested operation for the data object
     /// </summary>
@@ -42,6 +47,49 @@ public class DataPackage
     /// </summary>
     public void SetData(string format, object value) =>
         _data.Add(format, value);
+
+    internal DataTransfer CreateDataTransfer(out string dataPackageId)
+    {
+        dataPackageId = Guid.NewGuid().ToString("N");
+        Payloads[dataPackageId] = new Dictionary<string, object>(_data);
+
+        var dataTransfer = new DataTransfer();
+
+        if (_data.TryGetValue("Text", out object textValue) && textValue is string text)
+            dataTransfer.Add(DataTransferItem.CreateText(text));
+
+        dataTransfer.Add(DataTransferItem.Create(DataPackageIdFormat, dataPackageId));
+        return dataTransfer;
+    }
+
+    internal static void ReleaseDataTransfer(string dataPackageId)
+    {
+        if (dataPackageId is not null)
+            Payloads.TryRemove(dataPackageId, out _);
+    }
+
+    public static bool Contains(IDataTransfer dataTransfer, string format)
+        => TryGetData(dataTransfer, format, out object _);
+
+    public static object Get(IDataTransfer dataTransfer, string format)
+        => TryGetData(dataTransfer, format, out object value)
+            ? value
+            : throw new ArgumentException($"No data format of {format} was found in the data package");
+
+    public static bool TryGetData<T>(IDataTransfer dataTransfer, string format, out T value)
+    {
+        if (dataTransfer?.TryGetValue(DataPackageIdFormat) is { } dataPackageId &&
+            Payloads.TryGetValue(dataPackageId, out var payload) &&
+            payload.TryGetValue(format, out object rawValue) &&
+            rawValue is T typedValue)
+        {
+            value = typedValue;
+            return true;
+        }
+
+        value = default;
+        return false;
+    }
 
     private readonly Dictionary<string, object> _data = new Dictionary<string, object>();
 }

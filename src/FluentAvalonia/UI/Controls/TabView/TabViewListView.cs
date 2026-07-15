@@ -488,41 +488,43 @@ public class TabViewListView : ListBox
             }
         }
 
-        // Convert DataPackage to DataTransfer for the new DragDrop API
-        var dataTransfer = new DataTransfer();
-        foreach (var format in disArgs.Data.GetDataFormats())
-        {
-            var value = disArgs.Data.Get(format);
-            if (value is string strValue)
-                dataTransfer.Add(DataTransferItem.CreateText(strValue));
-        }
-
         var triggerArgs = _lastPointerPressedArgs;
-        var dropResult = triggerArgs != null
-            ? await DragDrop.DoDragDropAsync(triggerArgs, dataTransfer, effects)
-            : DragDropEffects.None;
-
-        _isInDrag = false;
-        if (hasReorder)
+        var dropResult = DragDropEffects.None;
+        string dataPackageId = null;
+        try
         {
-            EndReorder();
-        }
-        else
-        {
-            (ItemsPanelRoot as TabViewStackPanel).ClearReorder();
-
-            if (ToolTip.GetIsOpen(_dragItem))
+            if (triggerArgs != null)
             {
-                ToolTip.SetIsOpen(_dragItem, false);
+                var dataTransfer = disArgs.Data.CreateDataTransfer(out dataPackageId);
+                dropResult = await DragDrop.DoDragDropAsync(triggerArgs, dataTransfer, effects);
             }
-            ToolTip.SetTip(_dragItem, _dragItemToolTip);
+        }
+        finally
+        {
+            Data.DataPackage.ReleaseDataTransfer(dataPackageId);
+            _isInDrag = false;
+
+            if (hasReorder)
+            {
+                EndReorder();
+            }
+            else
+            {
+                (ItemsPanelRoot as TabViewStackPanel).ClearReorder();
+
+                if (ToolTip.GetIsOpen(_dragItem))
+                {
+                    ToolTip.SetIsOpen(_dragItem, false);
+                }
+                ToolTip.SetTip(_dragItem, _dragItemToolTip);
+            }
+
+            _initialPoint = null;
+            _dragItem = null;
+            _dragIndex = -1;
         }
 
         DragItemsCompleted?.Invoke(this, new DragItemsCompletedEventArgs(dropResult, disArgs.Items));
-
-        _initialPoint = null;
-        _dragItem = null;
-        _dragIndex = -1;
     }
 
     private void OnDragEnter(object sender, DragEventArgs e)
