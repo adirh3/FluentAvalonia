@@ -22,6 +22,8 @@ namespace FluentAvalonia.UI.Controls;
 [TemplatePart(s_tpContentPresenter, typeof(ContentPresenter))]
 public partial class Frame : ContentControl
 {
+    private TopLevel _topLevel;
+
     public Frame()
     {
         var back = new AvaloniaList<PageStackEntry>();
@@ -83,20 +85,22 @@ public partial class Frame : ContentControl
     {
         base.OnAttachedToVisualTree(e);
 
-        if (e.Root is TopLevel tl)
+        _topLevel = TopLevel.GetTopLevel(this);
+        if (_topLevel != null)
         {
-            tl.BackRequested += OnTopLevelBackRequested;
+            _topLevel.BackRequested += OnTopLevelBackRequested;
         }
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        base.OnDetachedFromVisualTree(e);
-
-        if (e.Root is TopLevel tl)
+        if (_topLevel != null)
         {
-            tl.BackRequested -= OnTopLevelBackRequested;
+            _topLevel.BackRequested -= OnTopLevelBackRequested;
+            _topLevel = null;
         }
+
+        base.OnDetachedFromVisualTree(e);
     }
 
     /// <summary>

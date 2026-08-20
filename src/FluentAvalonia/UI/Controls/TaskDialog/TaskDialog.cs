@@ -166,7 +166,7 @@ public partial class TaskDialog : ContentControl
 
         OnOpening();
         
-        var owner = XamlRoot ?? VisualRoot as Visual;
+        var owner = XamlRoot ?? TopLevel.GetTopLevel(this);
 
         void UnparentDialog()
         {

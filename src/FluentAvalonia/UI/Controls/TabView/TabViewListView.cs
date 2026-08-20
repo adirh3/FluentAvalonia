@@ -314,7 +314,7 @@ public class TabViewListView : ListBox
 
     private void UpdateDragInfo()
     {
-        FAUISettings.GetSystemDragSize((VisualRoot as TopLevel)?.RenderScaling ?? 1.0, out _cxDrag, out _cyDrag);
+        FAUISettings.GetSystemDragSize(TopLevel.GetTopLevel(this)?.RenderScaling ?? 1.0, out _cxDrag, out _cyDrag);
     }
 
     private void BeginReorder(PointerEventArgs args)

@@ -58,10 +58,11 @@ public partial class MainView : UserControl
     {
         base.OnAttachedToVisualTree(e);
 
-        ClipboardService.Owner = TopLevel.GetTopLevel(this);
+        var topLevel = TopLevel.GetTopLevel(this);
+        ClipboardService.Owner = topLevel;
         // Simple check - all desktop versions of this app will have a window as the TopLevel
         // Mobile and WASM will have something else
-        _isDesktop = TopLevel.GetTopLevel(this) is Window;
+        _isDesktop = topLevel is Window;
         var vm = new MainViewViewModel();
         DataContext = vm;
         FrameView.NavigationPageFactory = vm.NavigationFactory;
@@ -69,7 +70,7 @@ public partial class MainView : UserControl
         NavigationService.Instance.SetOverlayHost(OverlayHost);
 
         // On desktop, the window will call this during the splashscreen
-        if (e.Root is AppWindow aw)
+        if (topLevel is AppWindow aw)
         {
             (aw.SplashScreen as MainAppSplashScreen).InitApp += () =>
             {
@@ -90,7 +91,7 @@ public partial class MainView : UserControl
     {
         base.OnLoaded(e);
 
-        if (VisualRoot is AppWindow aw)
+        if (TopLevel.GetTopLevel(this) is AppWindow aw)
         {
             TitleBarHost.ColumnDefinitions[3].Width = new GridLength(aw.TitleBar.RightInset, GridUnitType.Pixel);
         }

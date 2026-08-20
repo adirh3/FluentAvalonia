@@ -50,7 +50,7 @@ public partial class TaskDialogPage : ControlsPageBase
             td.Buttons.Add(_apiInActionTD.Buttons[i]);
         }
 
-        td.XamlRoot = VisualRoot as Visual;
+        td.XamlRoot = TopLevel.GetTopLevel(this);
         var result = await td.ShowAsync(this.FindControl<CheckBox>("ShowWindowedCheck").IsChecked == false);
 
         this.FindControl<TextBlock>("LastResultText").Text = $"Last Dialog Result: {result}";
@@ -224,7 +224,7 @@ public partial class TaskDialogPage : ControlsPageBase
         };
 
         // Don't forget to set the XamlRoot!!
-        td.XamlRoot = VisualRoot as Visual;
+        td.XamlRoot = TopLevel.GetTopLevel(this);
         var result = await td.ShowAsync();
 
         this.FindControl<TextBlock>("ProgressTaskResultText").Text = $"File Download Status: {result}";
@@ -275,7 +275,7 @@ public partial class TaskDialogPage : ControlsPageBase
         };
 
         // Don't forget to set the XamlRoot!!
-        td.XamlRoot = VisualRoot as Visual;
+        td.XamlRoot = TopLevel.GetTopLevel(this);
         _ = await td.ShowAsync();
     }
 

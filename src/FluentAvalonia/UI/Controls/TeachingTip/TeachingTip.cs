@@ -244,7 +244,7 @@ public partial class TeachingTip : ContentControl
             },
             WindowManagerAddShadowHint = false,
             IsLightDismissEnabled = true,
-            PlacementTarget = (Control)VisualRoot
+            PlacementTarget = GetHostTopLevel()
         };
 
         _lightDismissIndicatorPopup = popup;
@@ -1044,14 +1044,16 @@ public partial class TeachingTip : ContentControl
     {
         //Reset the close reason to the default value of programmatic.
         _lastCloseReason = TeachingTipCloseReason.Programmatic;
+        var topLevel = GetHostTopLevel();
 
-        _currentBoundsInCoreWindowSpace = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(VisualRoot as Visual) ?? Matrix.Identity);
+        _currentBoundsInCoreWindowSpace = new Rect(Bounds.Size)
+            .TransformToAABB(this.TransformToVisual(topLevel) ?? Matrix.Identity);
 
         if (_target != null)
         {
             SetViewportChangedEvent(_target);
             _currentTargetBoundsInCoreWindowSpace = new Rect(_target.Bounds.Size)
-                .TransformToAABB(_target.TransformToVisual(_target.GetPresentationSource()?.RootVisual as Visual) ?? Matrix.Identity);
+                .TransformToAABB(_target.TransformToVisual(topLevel) ?? Matrix.Identity);
         }
         else
         {
@@ -1083,6 +1085,7 @@ public partial class TeachingTip : ContentControl
         {
             CreateNewPopup();
         }
+        UpdatePopupPlacementTargets(topLevel);
 
         // If the tip is not going to open because it does not fit we need to make sure that
         // the open, closing, closed life cycle still fires so that we don't cause apps to leak
@@ -1100,7 +1103,7 @@ public partial class TeachingTip : ContentControl
             if (_popup != null)
             {
                 // We have to do this so styles inherit 
-                ((ISetLogicalParent)_popup).SetParent(_target ?? (Control)VisualRoot);
+                ((ISetLogicalParent)_popup).SetParent(_target ?? topLevel);
 
                 // HACK
                 if (_repositionOnNextOpen)
@@ -1134,9 +1137,10 @@ public partial class TeachingTip : ContentControl
             }
         }
 
-        if (VisualRoot != null)
+        if (topLevel != null)
         {
-            _acceleratorKeyActivatedRevoker = (VisualRoot as Interactive).AddDisposableHandler(KeyDownEvent, OnF6PreviewKeyDownClicked, RoutingStrategies.Tunnel);
+            _acceleratorKeyActivatedRevoker = topLevel.AddDisposableHandler(
+                KeyDownEvent, OnF6PreviewKeyDownClicked, RoutingStrategies.Tunnel);
         }
 
         // Make sure we are in the correct VSM state after ApplyTemplate and moving the template content from the Control to the Popup:
@@ -1181,7 +1185,7 @@ public partial class TeachingTip : ContentControl
         {
             WindowManagerAddShadowHint = false,
             IsLightDismissEnabled = false,
-            PlacementTarget = (Control)VisualRoot,
+            PlacementTarget = GetHostTopLevel(),
             // Raw Popups in WinUI don't have placement methods like we have and always positioned at <0,0> in the Window
             // so we mimic that here so that the remaining positioning logic elsewhere in this code still works
             Placement = PlacementMode.AnchorAndGravity,
@@ -1326,11 +1330,15 @@ public partial class TeachingTip : ContentControl
 
     private bool HandleF6Clicked(bool fromPopup = false)
     {
+        var topLevel = GetHostTopLevel();
+        if (topLevel == null)
+            return false;
+
         bool hasFocusInSubtree()
         {
             if (_rootElement != null)
             {
-                Visual current = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement() as Visual;
+                Visual current = topLevel.FocusManager.GetFocusedElement() as Visual;
 
                 while (current != null)
                 {
@@ -1375,7 +1383,7 @@ public partial class TeachingTip : ContentControl
 
             if (f6Button != null)
             {
-                _previouslyFocusedElement = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement();
+                _previouslyFocusedElement = topLevel.FocusManager.GetFocusedElement();
                 f6Button.Focus(NavigationMethod.Directional);
                 return true;
             }
@@ -1408,10 +1416,11 @@ public partial class TeachingTip : ContentControl
 
     private void OnPopupOpened(object sender, EventArgs args)
     {
-        _currentXamlRootSize = (VisualRoot as TopLevel)?.ClientSize ?? default;
-        if (VisualRoot is Control c)
+        var topLevel = GetHostTopLevel();
+        _currentXamlRootSize = topLevel?.ClientSize ?? default;
+        if (topLevel != null)
         {
-            _xamlRootChangedRevoker = c.GetObservable(BoundsProperty).Subscribe(XamlRootChanged);
+            _xamlRootChangedRevoker = topLevel.GetObservable(BoundsProperty).Subscribe(XamlRootChanged);
         }
 
         if (FAUISettings.AreAnimationsEnabled())
@@ -1444,6 +1453,13 @@ public partial class TeachingTip : ContentControl
             _previouslyFocusedElement?.Focus(NavigationMethod.Unspecified);
         }
         _previouslyFocusedElement = null;
+
+        if (_retargetAfterClose)
+        {
+            _retargetAfterClose = false;
+            _targetBeforeRetarget = null;
+            UpdatePopupPlacementTargets(GetHostTopLevel());
+        }
 
         // TODO: AutomationPeer stuff
     }
@@ -1480,7 +1496,15 @@ public partial class TeachingTip : ContentControl
                 {
                     // The developer has changed the Cancel property to true, indicating that they wish to Cancel the
                     // closing of this tip, so we need to revert the IsOpen property to true.
+                    bool restoreTarget = _retargetAfterClose;
+                    var targetBeforeRetarget = _targetBeforeRetarget;
+                    _retargetAfterClose = false;
+                    _targetBeforeRetarget = null;
+                    if (restoreTarget && !ReferenceEquals(Target, targetBeforeRetarget))
+                        Target = targetBeforeRetarget;
+                    _ignoreNextIsOpenChanged = true;
                     IsOpen = true;
+                    Dispatcher.UIThread.Post(RestoreOpenStateAfterCancelledClose, DispatcherPriority.Render);
                 }
             });
 
@@ -1511,6 +1535,22 @@ public partial class TeachingTip : ContentControl
             {
                 SetIsIdle(true);
             }
+
+        }
+    }
+
+    private void RestoreOpenStateAfterCancelledClose()
+    {
+        SetIsIdle(true);
+        var topLevel = GetHostTopLevel();
+        if (_popup != null)
+            ((ISetLogicalParent)_popup).SetParent(_target ?? topLevel);
+
+        _acceleratorKeyActivatedRevoker?.Dispose();
+        if (topLevel != null)
+        {
+            _acceleratorKeyActivatedRevoker = topLevel.AddDisposableHandler(
+                KeyDownEvent, OnF6PreviewKeyDownClicked, RoutingStrategies.Tunnel);
         }
     }
 
@@ -1585,6 +1625,7 @@ public partial class TeachingTip : ContentControl
 
     private void OnTargetChanged()
     {
+        var previousTarget = _target;
         if (_target != null)
         {
             _target.Loaded -= OnTargetLoaded;
@@ -1598,12 +1639,16 @@ public partial class TeachingTip : ContentControl
             _target.Loaded += OnTargetLoaded;
         }
 
+        var topLevel = GetHostTopLevel();
+        if (!TryUpdatePopupPlacementTargets(topLevel, previousTarget))
+            return;
+
         if (IsOpen)
         {
             if (_target != null)
             {
                 _currentTargetBoundsInCoreWindowSpace = new Rect(_target.Bounds.Size)
-                    .TransformToAABB(_target.TransformToVisual(VisualRoot as Visual).Value);
+                    .TransformToAABB(_target.TransformToVisual(topLevel) ?? Matrix.Identity);
 
                 SetViewportChangedEvent(_target);
             }
@@ -1645,7 +1690,7 @@ public partial class TeachingTip : ContentControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            _currentXamlRootSize = (VisualRoot as TopLevel)?.ClientSize ?? default;
+            _currentXamlRootSize = GetHostTopLevel()?.ClientSize ?? default;
             RepositionPopup();
         }, DispatcherPriority.Render);
     }
@@ -1654,10 +1699,13 @@ public partial class TeachingTip : ContentControl
     {
         if (IsOpen)
         {
+            var topLevel = GetHostTopLevel();
             var newTargetBounds = _target != null ?
-                new Rect(_target.Bounds.Size).TransformToAABB(_target.TransformToVisual(VisualRoot as Visual).Value) : default;
+                new Rect(_target.Bounds.Size)
+                    .TransformToAABB(_target.TransformToVisual(topLevel) ?? Matrix.Identity) : default;
 
-            var newCurrentBounds = new Rect(Bounds.Size).TransformToAABB(this.TransformToVisual(VisualRoot as Visual).Value);
+            var newCurrentBounds = new Rect(Bounds.Size)
+                .TransformToAABB(this.TransformToVisual(topLevel) ?? Matrix.Identity);
 
             if (newTargetBounds != _currentTargetBoundsInCoreWindowSpace ||
                 newCurrentBounds != _currentBoundsInCoreWindowSpace)
@@ -1671,7 +1719,34 @@ public partial class TeachingTip : ContentControl
 
     private void OnTargetLoaded(object sender, RoutedEventArgs args)
     {
+        if (!TryUpdatePopupPlacementTargets(GetHostTopLevel()))
+            return;
         RepositionPopup();
+    }
+
+    private bool TryUpdatePopupPlacementTargets(TopLevel topLevel, Control targetBeforeRetarget = null)
+    {
+        var currentTopLevel = _popup?.PlacementTarget ?? _lightDismissIndicatorPopup?.PlacementTarget;
+        bool popupIsOpen = _popup?.IsOpen == true || _lightDismissIndicatorPopup?.IsOpen == true;
+        if (popupIsOpen && currentTopLevel != null && !ReferenceEquals(currentTopLevel, topLevel))
+        {
+            if (!_retargetAfterClose)
+                _targetBeforeRetarget = targetBeforeRetarget;
+            _retargetAfterClose = true;
+            IsOpen = false;
+            return false;
+        }
+
+        UpdatePopupPlacementTargets(topLevel);
+        return true;
+    }
+
+    private void UpdatePopupPlacementTargets(TopLevel topLevel)
+    {
+        if (_popup != null)
+            _popup.PlacementTarget = topLevel;
+        if (_lightDismissIndicatorPopup != null)
+            _lightDismissIndicatorPopup.PlacementTarget = topLevel;
     }
 
     private void OnTargetLayoutUpdated(object sender, EffectiveViewportChangedEventArgs e)
@@ -2184,7 +2259,7 @@ public partial class TeachingTip : ContentControl
         {
             // For Avalonia, screen only matters for windowed systems. Since WinUI doesn't have this concept
             // we'll return a normal rect like GetEffectiveWindowBoundsInCoreWindowSpace does
-            if (VisualRoot is Window w)
+            if (GetHostTopLevel() is Window w)
             {
                 var displayInfo = w.Screens.ScreenFromWindow(w);
                 var scaleFactor = displayInfo.Scaling;
@@ -2200,7 +2275,12 @@ public partial class TeachingTip : ContentControl
 
     private Rect GetWindowBounds()
     {
-        return new Rect((VisualRoot as Visual)?.Bounds.Size ?? default);
+        return new Rect(GetHostTopLevel()?.Bounds.Size ?? default);
+    }
+
+    private TopLevel GetHostTopLevel()
+    {
+        return TopLevel.GetTopLevel(_target) ?? TopLevel.GetTopLevel(this);
     }
 
     private void GetPlacementFallbackOrder(TeachingTipPlacementMode preferredPlacement,
@@ -2329,7 +2409,19 @@ public partial class TeachingTip : ContentControl
 
     private CornerRadius GetTeachingTipCornerRadius() => CornerRadius;
 
-    private void SetIsIdle(bool idle) => _isIdle = idle;
+    private void SetIsIdle(bool idle)
+    {
+        _isIdle = idle;
+        if (idle && _retargetAfterClose && IsOpen &&
+            (_popup?.IsOpen == true || _lightDismissIndicatorPopup?.IsOpen == true))
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (_retargetAfterClose && IsOpen)
+                    IsOpen = false;
+            }, DispatcherPriority.Render);
+        }
+    }
 
 
     double TopLeftCornerRadius() => GetTeachingTipCornerRadius().TopLeft;
@@ -2384,6 +2476,8 @@ public partial class TeachingTip : ContentControl
     private bool _ignoreNextIsOpenChanged;
     private bool _isTemplateApplied;
     private bool _createNewPopupOnOpen;
+    private bool _retargetAfterClose;
+    private Control _targetBeforeRetarget;
 
     // HACK
     private bool _repositionOnNextOpen;

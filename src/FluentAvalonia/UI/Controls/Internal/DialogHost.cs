@@ -30,13 +30,9 @@ public class DialogHost : ContentControl
     {
         _ = base.MeasureOverride(availableSize);
 
-        if (VisualRoot is TopLevel tl)
+        if (TopLevel.GetTopLevel(this) is { } topLevel)
         {
-            return tl.ClientSize;
-        }
-        else if (VisualRoot is Control c)
-        {
-            return c.Bounds.Size;
+            return topLevel.ClientSize;
         }
 
         return default;

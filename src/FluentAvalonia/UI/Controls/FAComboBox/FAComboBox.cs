@@ -445,13 +445,13 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
         _subscriptionsOnOpen.Clear();
 
-        var toplevel = this.GetPresentationSource()?.RootVisual as TopLevel;
+        var toplevel = TopLevel.GetTopLevel(this);
         if (toplevel != null)
         {
             _subscriptionsOnOpen.Add(
                 toplevel.AddDisposableHandler(PointerWheelChangedEvent, (s, ev) =>
                 {
-                    if (IsDropDownOpen && (ev.Source as Visual)?.GetPresentationSource()?.RootVisual == toplevel)
+                    if (IsDropDownOpen && TopLevel.GetTopLevel(ev.Source as Visual) == toplevel)
                         ev.Handled = true;
                 }, RoutingStrategies.Tunnel));
         }
@@ -490,7 +490,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
                 if (container is null) // If this happens for any reason, just bail out
                     return;
 
-                var root = container.GetPresentationSource()?.RootVisual;
+                var root = TopLevel.GetTopLevel(container);
                 var transform = container.TransformToVisual(root);
                 if (!transform.HasValue) // Also bail out if this fails for any reason
                     return;
@@ -502,8 +502,7 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
 
             _popup.VerticalOffset = -dropDownDelta;
 
-            var contentRoot = _popup.Child.GetPresentationSource()?.RootVisual;
-            if (contentRoot is PopupRoot)
+            if (!_popup.IsUsingOverlayLayer)
             {
                 // HACK: Windowed popups appear to be +1 offset on x-axis for some reason
                 // which makes the popup look off center. Overlay popups are fine
@@ -519,18 +518,21 @@ public partial class FAComboBox : HeaderedSelectingItemsControl
     private void UpdateCornerRadius()
     {
         var child = _popup.Child as Visual;
-        var thisRoot = this.GetPresentationSource()?.RootVisual;
-        var popupRoot = child.GetPresentationSource()?.RootVisual;
+        var topLevel = TopLevel.GetTopLevel(this);
 
         bool isPopupAbove = false;
-        if (popupRoot is OverlayPopupHost oph)
+        if (_popup.IsUsingOverlayLayer && child != null && topLevel != null)
         {
-            Debug.Assert(thisRoot == popupRoot);
+            Debug.Assert(TopLevel.GetTopLevel(child) == topLevel);
             // Overlay popups are in use, this is the easiest
-            var pt = new Point(0, 0).Transform(this.TransformToVisual(thisRoot as Visual).Value);
-            var pt2 = new Point(0, 0).Transform(child.TransformToVisual(thisRoot as Visual).Value);
-
-            isPopupAbove = pt2.Y < pt.Y;
+            var transform = this.TransformToVisual(topLevel);
+            var childTransform = child.TransformToVisual(topLevel);
+            if (transform.HasValue && childTransform.HasValue)
+            {
+                var pt = new Point(0, 0).Transform(transform.Value);
+                var pt2 = new Point(0, 0).Transform(childTransform.Value);
+                isPopupAbove = pt2.Y < pt.Y;
+            }
         }
         else
         {
