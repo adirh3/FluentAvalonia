@@ -12,7 +12,7 @@
 
   <!-- Avalonia XAML compilation (same consumer-facing files as the NuGet package, with source-build DLL path) -->
   <PropertyGroup>
-    <AvaloniaBuildTasksLocation>$(MSBuildThisFileDirectory)..\Avalonia\src\Avalonia.Build.Tasks\bin\Debug\netstandard2.0\Avalonia.Build.Tasks.dll</AvaloniaBuildTasksLocation>
+    <AvaloniaBuildTasksLocation>$(MSBuildThisFileDirectory)..\Avalonia\src\Avalonia.Build.Tasks\bin\$(Configuration)\netstandard2.0\Avalonia.Build.Tasks.dll</AvaloniaBuildTasksLocation>
     <AvaloniaUseCompiledBindingsByDefault Condition="'$(AvaloniaUseCompiledBindingsByDefault)' == ''">true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
   <Import Project="$(MSBuildThisFileDirectory)..\Avalonia\packages\Avalonia\AvaloniaBuildTasks.props" />
